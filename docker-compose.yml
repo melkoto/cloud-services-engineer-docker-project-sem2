@@ -3,7 +3,7 @@ services:
     build:
       context: ./backend
       dockerfile: Dockerfile
-    image: momo-store-backend:latest
+    image: ${DOCKER_USERNAME}/docker-project-backend:latest
     container_name: momo-store-backend
     restart: unless-stopped
     environment:
@@ -29,7 +29,7 @@ services:
     build:
       context: ./frontend
       dockerfile: Dockerfile
-    image: momo-store-frontend:latest
+    image: ${DOCKER_USERNAME}/docker-project-frontend:latest
     container_name: momo-store-frontend
     restart: unless-stopped
     depends_on:
