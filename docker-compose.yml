@@ -1,4 +1,30 @@
 services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    image: momo-store-backend:latest
+    container_name: momo-store-backend
+    restart: unless-stopped
+    environment:
+      - LOG_LEVEL=info
+    ports:
+      - "8081:8081"
+    healthcheck:
+      test: ["CMD", "wget", "-q", "--spider", "http://localhost:8081/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 5s
+    networks:
+      - momo-network
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 256M
+    read_only: true
+
   frontend:
     build:
       context: ./frontend
@@ -6,6 +32,8 @@ services:
     image: momo-store-frontend:latest
     container_name: momo-store-frontend
     restart: unless-stopped
+    depends_on:
+      - backend
     ports:
       - "80:80"
     healthcheck:
