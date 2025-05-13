@@ -1,6 +1,8 @@
-FROM node:14-alpine AS builder
+FROM node:18-alpine AS builder
 
-RUN apk add --no-cache python3 make g++
+RUN apk update && \
+    apk upgrade && \
+    apk add --no-cache python3 make g++
 
 WORKDIR /app
 
@@ -16,9 +18,11 @@ ENV VUE_APP_API_URL=/api
 RUN npm run build
 
 # Минимальный образ
-FROM nginx:1.21-alpine
+FROM nginx:1.25-alpine
 
-RUN apk add --no-cache curl
+RUN apk update && \
+    apk upgrade && \
+    apk add --no-cache curl
 
 # Создание непривилегированной группы и пользователя
 RUN addgroup -g 1001 -S appgroup && \
