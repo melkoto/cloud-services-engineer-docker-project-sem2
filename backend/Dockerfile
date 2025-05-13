@@ -1,4 +1,4 @@
-FROM golang:1.17-alpine AS builder
+FROM golang:1.20-alpine AS builder
 
 RUN apk add --no-cache git
 
@@ -14,7 +14,7 @@ COPY . .
 
 RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -ldflags="-w -s" -o momo-store ./cmd/api
 
-FROM alpine:3.15
+FROM alpine:3.18
 
 RUN apk add --no-cache ca-certificates tzdata && \
     update-ca-certificates
